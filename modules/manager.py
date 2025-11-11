@@ -1,6 +1,6 @@
-from modules import Supermarket, Product, User
+from modules import Product, User
 
-supermarket = Supermarket("JonnyBeck MCHJ", "Nomongon, Chortoq")
+# supermarket = Supermarket("JonnyBeck MCHJ", "Nomongon, Chortoq")
 
 def manager():
   while True:
@@ -16,19 +16,27 @@ def manager():
       password = input("Parol: ")
       current_user = User.login(username, password)
       if not current_user:
-        print("Noto'g'ri ma’lumotlar!")
+        print("Noto'g'ri ma'lumotlar!")
         continue
 
       if current_user.user_type == "admin":
         while True:
           print("\n======= Admin Panel =======")
-          print("1. Mahsulotlarni ko'rish\n2. Qo'shish\n3. Tahrirlash\n4. O'chirish\n5. Chiqish")
+          print("1. Mahsulotlarni ko'rish\n2. Mahsulot Qo'shish\n3. Mahsulotni Tahrirlash\n4. Mahsulotni O'chirish\n5. Sotuv tarixi \n6. Chiqish")
           choice = input("Tanlov: ")
           if choice == "1":
-            supermarket.view_products()
+            # supermarket.view_products()
+            products = Product.get_all()
+            print("\n======= Mahsulotlar =======")
+            # for i, p in enumerate(products, start=1):
+            #   print(f"{i}. {p.name} - {p.price} so'm, {p.quantity} {p.quantity_type}")
+            for p in products:
+              print(f"ID: {p.id}. {p.name} - {p.price} so'm, {p.quantity} {p.quantity_type}")
           elif choice == "2":
-            n = input("Nom: "); p = int(input("Narx: "))
-            q = int(input("Miqdor: ")); t = input("Turi: ")
+            n = input("Nom: ")
+            p = int(input("Narx: "))
+            q = int(input("Miqdor: "))
+            t = input("Turi: ")
             Product.add(n, p, q, t)
           elif choice == "3":
             i = int(input("Mahsulot ID: "))
@@ -40,6 +48,8 @@ def manager():
             i = int(input("O'chirish uchun ID: "))
             Product.remove(i)
           elif choice == "5":
+            pass
+          elif choice == "6":
             break
 
       elif current_user.user_type == "client":
@@ -48,7 +58,12 @@ def manager():
           print("1. Mahsulotlarni ko'rish\n2. Savatchaga qo'shish\n3. Savatchani ko'rish\n4. Xarid qilish\n5. Balans\n6. Chiqish")
           choice = input("Tanlov: ")
           if choice == "1":
-            supermarket.view_products()
+            products = Product.get_all()
+            print("\n======= Mahsulotlar =======")
+            # for i, p in enumerate(products, start=1):
+            #   print(f"{i}. {p.name} - {p.price} so'm, {p.quantity} {p.quantity_type}")
+            for p in products:
+              print(f"ID: {p.id}. {p.name} - {p.price} so'm, {p.quantity} {p.quantity_type}")
           elif choice == "2":
             pid = int(input("Mahsulot ID: "))
             qty = int(input("Miqdor: "))
