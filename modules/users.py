@@ -22,6 +22,25 @@ class User:
 class Admin(User):
   def __init__(self, id, username, password, user_type):
     super().__init__(id, username, password, user_type)
+  
+  def view_sale_history(self):
+    query_get = "SELECT * FROM sales_history"
+    items = execute_query(query_get, (), fetch=True)
+    if not items:
+      print("Sotuv tarixi bo'sh")
+      return
+    else:
+      print("\n ======= Stovular Tarixi =======")
+      # for i, item in enumerate(items, 1):
+      #   sales_id, customer_id, product_id, quantity, price, sale_made_time = item
+      #   print(f"{i}")
+      for item in items:
+        sales_id, customer_id, product_id, quantity, price, sale_made_time = item
+        print(f"Sotuv ID: {sales_id}, Mijoz ID: {customer_id}, Produkt ID: {product_id}, Miqdor: {quantity}, Narx: {price}, Sotuv bo'lgan vaqt: {sale_made_time}")
+    
+    return items
+
+
 
 class Client(User):
   def __init__(self, id, username, password, user_type):
@@ -80,27 +99,9 @@ class Client(User):
     execute_query("DELETE FROM user_basket WHERE customer_id = %s", (self.id,))
     print("Xarid muvaffaqiyatli amalga oshirildi!")
   
-  def view_sale_history(self):
-    query_get = "SELECT * FROM sales_history"
-    items = execute_query(query_get, (), fetch=True)
-    if not items:
-      print("Sotuv tarixi bo'sh")
-      return
-    else:
-      print("\n ======= Stovular Tarixi =======")
-      # for i, item in enumerate(items, 1):
-      #   sales_id, customer_id, product_id, quantity, price, sale_made_time = item
-      #   print(f"{i}")
-      for item in items:
-        sales_id, customer_id, product_id, quantity, price, sale_made_time = item
-        print(f"Sotuv ID: {sales_id}, Mijoz ID: {customer_id}, Produkt ID: {product_id}, Miqdor: {quantity}, Narx: {price}, Sotuv bo'lgan vaqt: {sale_made_time}")
-    
-    return items
-
-
   def view_user_buy_history(self):
     query_get = "SELECT * FROM sales_history WHERE customer_id=%s"
-    items = execute_query(query_get, (self.id), fetch=True)
+    items = execute_query(query_get, (self.id,), fetch=True)
     if not items:
       print("Sotuv tarixi bo'sh")
       return
@@ -110,7 +111,7 @@ class Client(User):
       #   sales_id, customer_id, product_id, quantity, price, sale_made_time = item
       #   print(f"{i}")
       for item in items:
-        sales_id, product_id, quantity, price, sale_made_time = item
+        sales_id, _, product_id, quantity, price, sale_made_time = item
         print(f"Sotuv ID: {sales_id}, Produkt ID: {product_id}, Miqdor: {quantity}, Narx: {price}, Sotuv bo'lgan vaqt: {sale_made_time}")
     
     return items

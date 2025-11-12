@@ -48,14 +48,14 @@ def manager():
             i = int(input("O'chirish uchun ID: "))
             Product.remove(i)
           elif choice == "5":
-            pass
+            current_user.view_sale_history()
           elif choice == "6":
             break
 
       elif current_user.user_type == "client":
         while True:
           print("\n======= Mijoz Panel =======")
-          print("1. Mahsulotlarni ko'rish\n2. Savatchaga qo'shish\n3. Savatchani ko'rish\n4. Xarid qilish\n5. Balans\n6. Chiqish")
+          print("1. Mahsulotlarni ko'rish\n2. Savatchaga qo'shish\n3. Savatchani ko'rish\n4. Xarid qilish\n5. Balans\n6. Xarid tarixi\n7. Chiqish")
           choice = input("Tanlov: ")
           if choice == "1":
             products = Product.get_all()
@@ -75,4 +75,6 @@ def manager():
           elif choice == "5":
             current_user.view_balance()
           elif choice == "6":
+            current_user.view_user_buy_history()
+          elif choice == "7":
             break
