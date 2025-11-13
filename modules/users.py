@@ -135,3 +135,11 @@ class Client(User):
         print(f"Sotuv ID: {sales_id}, Produkt ID: {product_id}, Miqdor: {quantity}, Narx: {price}, Sotuv bo'lgan vaqt: {sale_made_time}")
     
     return items
+  
+  def add_money(self, amount):
+    if amount <= 0:
+      print("Xato: Miqdor 0 dan katta bo'lishi kerak.")
+      return
+    query = "UPDATE users SET balance = balance + %s WHERE id = %s"
+    execute_query(query, (amount, self.id))
+    print(f"{amount} so'm balansga qo'shildi.")

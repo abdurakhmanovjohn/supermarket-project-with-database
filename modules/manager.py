@@ -33,17 +33,23 @@ def manager():
             for p in products:
               print(f"ID: {p.id}. {p.name} - {p.price} so'm, {p.quantity} {p.quantity_type}")
           elif choice == "2":
-            n = input("Nom: ")
-            p = int(input("Narx: "))
-            q = int(input("Miqdor: "))
-            t = input("Turi: ")
-            Product.add(n, p, q, t)
+            try:
+              n = input("Nom: ")
+              p = int(input("Narx: "))
+              q = int(input("Miqdor: "))
+              t = input("Turi: ")
+              Product.add(n, p, q, t)
+            except Exception:
+              print("Yuqoridagi ma'lumotlar noto'g'ri kiritilgan, iltimos yana urinib ko'ring")
           elif choice == "3":
-            i = int(input("Mahsulot ID: "))
-            n = input("Yangi nom (bo'sh qoldirish mumkin): ") or None
-            p = input("Yangi narx: ") or None
-            q = input("Yangi miqdor: ") or None
-            Product.edit(i, n, int(p) if p else None, int(q) if q else None)
+            try:
+              i = int(input("Mahsulot ID: "))
+              n = input("Yangi nom (bo'sh qoldirish mumkin): ") or None
+              p = input("Yangi narx: ") or None
+              q = input("Yangi miqdor: ") or None
+              Product.edit(i, n, int(p) if p else None, int(q) if q else None)
+            except Exception:
+              print("Yuqoridagi ma'lumotlar noto'g'ri kiritilgan, iltimos yana urinib ko'rining")
           elif choice == "4":
             i = int(input("O'chirish uchun ID: "))
             Product.remove(i)
@@ -57,7 +63,7 @@ def manager():
       elif current_user.user_type == "client":
         while True:
           print("\n======= Mijoz Panel =======")
-          print("1. Mahsulotlarni ko'rish\n2. Savatchaga qo'shish\n3. Savatchani ko'rish\n4. Savatchani tahrirlash\n5. Xarid qilish\n6. Balans\n7. Xarid tarixi\n8. Chiqish")
+          print("1. Mahsulotlarni ko'rish\n2. Savatchaga qo'shish\n3. Savatchani ko'rish\n4. Savatchani tahrirlash\n5. Xarid qilish\n6. Balans\n7. Balansga pul qo'shish\n8. Xarid tarixi\n9. Chiqish")
           choice = input("Tanlov: ")
           if choice == "1":
             products = Product.get_all()
@@ -67,21 +73,36 @@ def manager():
             for p in products:
               print(f"ID: {p.id}. {p.name} - {p.price} so'm, {p.quantity} {p.quantity_type}")
           elif choice == "2":
-            pid = int(input("Mahsulot ID: "))
-            qty = int(input("Miqdor: "))
-            current_user.add_to_basket(pid, qty)
+            try:
+              pid = int(input("Mahsulot ID: "))
+              qty = int(input("Miqdor: "))
+              current_user.add_to_basket(pid, qty)
+            except Exception:
+              print("Xato: Miqdor noto'g'ri kiritilgan, iltimos faqat raqam kiriting")
+              continue
           elif choice == "3":
             current_user.view_basket()
           elif choice == "4":
-            current_user.view_basket()
-            bid = int(input("Tahrirlash uchun savatcha ID: "))
-            qty = int(input("Yangi miqdor (0 kiritilsa, o'chiriladi): "))
-            current_user.edit_user_basket(bid, qty)
+            try:
+              current_user.view_basket()
+              bid = int(input("Tahrirlash uchun savatcha ID: "))
+              qty = int(input("Yangi miqdor (0 kiritilsa, o'chiriladi): "))
+              current_user.edit_user_basket(bid, qty)
+            except Exception:
+              print("Xato: Miqdor yoki ID noto'g'ri kiritilgan, iltimos faqat raqam kiriting")
+              continue
           elif choice == "5":
             current_user.checkout()
           elif choice == "6":
             current_user.view_balance()
           elif choice == "7":
-            current_user.view_user_buy_history()
+            try:
+              amount = int(input("Qo'shiladigan summa: "))
+              current_user.add_money(amount)
+            except ValueError:
+              print("Xato: Iltimos, faqat raqam kiriting.")
+              continue
           elif choice == "8":
+            current_user.view_user_buy_history()
+          elif choice == "9":
             break
