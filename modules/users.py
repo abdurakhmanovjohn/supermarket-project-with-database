@@ -39,6 +39,11 @@ class Admin(User):
         print(f"Sotuv ID: {sales_id}, Mijoz ID: {customer_id}, Produkt ID: {product_id}, Miqdor: {quantity}, Narx: {price}, Sotuv bo'lgan vaqt: {sale_made_time}")
     
     return items
+  
+  def view_balance(self):
+    query = "SELECT COALESCE(SUM(price * quantity), 0) FROM sales_history"
+    total_balance = execute_query(query, fetch=True)[0][0]
+    print(f"Supermarketning umumiy tushumi: {total_balance} so'm")
 
 
 
@@ -73,9 +78,24 @@ class Client(User):
     print("\n======= Savatcha =======")
     total = 0
     for i, (bid, name, qty, price) in enumerate(basket, start=1):
-      print(f"{i}. {name} - {qty} dona x {price} = {qty * price} so'm")
+      print(f"{i}. [ID: {bid}] {name} - {qty} dona x {price} = {qty * price} so'm")
       total += qty * price
     print(f"Jami: {total} so'm")
+  
+  def edit_user_basket(self, basket_id, new_quantity):
+    query_check = "SELECT quantity FROM user_basket WHERE id = %s AND customer_id = %s"
+    existing = execute_query(query_check, (basket_id, self.id), fetch=True)
+    if not existing:
+      print("Bunday savatcha elementi topilmadi.")
+      return
+
+    if new_quantity <= 0:
+      execute_query("DELETE FROM user_basket WHERE id = %s AND customer_id = %s", (basket_id, self.id))
+      print("Mahsulot savatchadan olib tashlandi.")
+      return
+
+    execute_query("UPDATE user_basket SET quantity = %s WHERE id = %s AND customer_id = %s", (new_quantity, basket_id, self.id))
+    print("Savatchadagi mahsulot miqdori yangilandi.")
 
   def checkout(self):
     query_get = "SELECT product_id, quantity, price FROM user_basket WHERE customer_id = %s"

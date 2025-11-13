@@ -22,7 +22,7 @@ def manager():
       if current_user.user_type == "admin":
         while True:
           print("\n======= Admin Panel =======")
-          print("1. Mahsulotlarni ko'rish\n2. Mahsulot Qo'shish\n3. Mahsulotni Tahrirlash\n4. Mahsulotni O'chirish\n5. Sotuv tarixi \n6. Chiqish")
+          print("1. Mahsulotlarni ko'rish\n2. Mahsulot Qo'shish\n3. Mahsulotni Tahrirlash\n4. Mahsulotni O'chirish\n5. Sotuv tarixi\n6. Supermarket balansini ko'rish\n7. Chiqish")
           choice = input("Tanlov: ")
           if choice == "1":
             # supermarket.view_products()
@@ -50,12 +50,14 @@ def manager():
           elif choice == "5":
             current_user.view_sale_history()
           elif choice == "6":
+            current_user.view_balance()
+          elif choice == "7":
             break
 
       elif current_user.user_type == "client":
         while True:
           print("\n======= Mijoz Panel =======")
-          print("1. Mahsulotlarni ko'rish\n2. Savatchaga qo'shish\n3. Savatchani ko'rish\n4. Xarid qilish\n5. Balans\n6. Xarid tarixi\n7. Chiqish")
+          print("1. Mahsulotlarni ko'rish\n2. Savatchaga qo'shish\n3. Savatchani ko'rish\n4. Savatchani tahrirlash\n5. Xarid qilish\n6. Balans\n7. Xarid tarixi\n8. Chiqish")
           choice = input("Tanlov: ")
           if choice == "1":
             products = Product.get_all()
@@ -71,10 +73,15 @@ def manager():
           elif choice == "3":
             current_user.view_basket()
           elif choice == "4":
-            current_user.checkout()
+            current_user.view_basket()
+            bid = int(input("Tahrirlash uchun savatcha ID: "))
+            qty = int(input("Yangi miqdor (0 kiritilsa, o'chiriladi): "))
+            current_user.edit_user_basket(bid, qty)
           elif choice == "5":
-            current_user.view_balance()
+            current_user.checkout()
           elif choice == "6":
-            current_user.view_user_buy_history()
+            current_user.view_balance()
           elif choice == "7":
+            current_user.view_user_buy_history()
+          elif choice == "8":
             break
