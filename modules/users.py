@@ -106,7 +106,7 @@ class Client(User):
       print("Sotuv tarixi bo'sh")
       return
     else:
-      print("\n ======= Stovular Tarixi =======")
+      print("\n ======= Sotvular Tarixi =======")
       # for i, item in enumerate(items, 1):
       #   sales_id, customer_id, product_id, quantity, price, sale_made_time = item
       #   print(f"{i}")
